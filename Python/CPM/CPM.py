@@ -87,6 +87,7 @@ def cpm(actividades):
 
     # Imprime la ruta crítica
     print(f"Ruta crítica: {ruta_critica}")
+    return ruta_critica
     
 ################################################################
 
@@ -101,10 +102,12 @@ indice = 0
 
 def calcular_ruta_critica():
     if tareas:
-        cpm(tareas)
+        ruta_critica = cpm(tareas)
+        mostrar_ruta_critica(ruta_critica)
+        
 def agregar():
     global indice
-    dependencia_lista = dependencia.get().split(',')
+    dependencia_lista = dependencia.get().upper().split(',')
     lista_tareas.insert("","end",values=(chr(65+indice),tarea.get(),duracion.get(),dependencia_lista))
     tareas[chr(65+indice)] = (duracion.get(),dependencia_lista)
     global entrada_tarea
@@ -133,6 +136,21 @@ def borrar_todos():
         tareas.popitem()
     indice = 0
     print(tareas)
+
+def mostrar_ruta_critica(ruta_critica):
+    ruta_critica_window = Toplevel(ventana, bd=5, relief="ridge", highlightbackground="black", highlightcolor="black", highlightthickness=1)
+    ruta_critica_window.geometry('300x100')
+    ruta_critica_window.resizable(width=False,height=False)
+    ruta_critica_window.title("Ruta Crítica")
+    
+    ruta_critica_label = Label(ruta_critica_window, text="Ruta Crítica:")
+    ruta_critica_label.pack()
+    
+    ruta_critica_label = Label(ruta_critica_window, text="-->".join(ruta_critica))
+    ruta_critica_label.pack()
+
+    boton_cerrar = Button(ruta_critica_window, text="Cerrar", command=lambda: ruta_critica_window.destroy())
+    boton_cerrar.pack()
     
 etiqueta_texto_t = Label(ventana, text="Ingresar Tarea: ")
 etiqueta_texto_t.place(x=50,y=10)
